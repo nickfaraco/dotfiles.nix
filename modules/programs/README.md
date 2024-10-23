@@ -1,0 +1,1 @@
+The function in the default.nix file recursively add all of the modules in the folder and subfolder as long as the filename does not start with an underscore.
