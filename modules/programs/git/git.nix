@@ -1,14 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   # put a shell script into the nix store
   gitIdentity =
     pkgs.writeShellScriptBin "git-identity" (builtins.readFile ./git-identity);
-in
-{
+in {
   # we will use the excellent fzf in our `git-identity` script, so let's make sure it's available
   # let's add the gitIdentity script to the path as well
   home.packages = with pkgs; [

@@ -1,7 +1,8 @@
-{ pkgs
-, self
-, config
-, ...
+{
+  pkgs,
+  self,
+  config,
+  ...
 }: {
   users.users.nick.home = "/Users/nick";
   # List packages installed in system profile. To search by name, run:
@@ -44,14 +45,13 @@
   nixpkgs.hostPlatform = "aarch64-darwin";
 
   # Use aliases instead of symbolic links for the apps to be found by Spotlight
-  system.activationScripts.applications.text =
-    let
-      env = pkgs.buildEnv {
-        name = "system-applications";
-        paths = config.environment.systemPackages;
-        pathsToLink = "/Applications";
-      };
-    in
+  system.activationScripts.applications.text = let
+    env = pkgs.buildEnv {
+      name = "system-applications";
+      paths = config.environment.systemPackages;
+      pathsToLink = "/Applications";
+    };
+  in
     pkgs.lib.mkForce ''
       # Set up applications.
       echo "setting up /Applications..." >&2

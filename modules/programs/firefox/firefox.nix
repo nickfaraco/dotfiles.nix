@@ -1,6 +1,6 @@
 # using this overlay https://github.com/bandithedoge/nixpkgs-firefox-darwin
 # and css adapted from https://github.com/scientiac/scifox/tree/immersive
-{ pkgs, ... }: {
+{pkgs, ...}: {
   programs.firefox = {
     enable = true;
 
@@ -129,28 +129,35 @@
         "privacy.firstparty.isolate" = true;
         "media.peerconnection.enabled" = false; # Disables WebRTC
         "dom.battery.enabled" = false;
-
       };
       search = {
         force = true;
         default = "DuckDuckGo";
         engines = {
           "Nix Packages" = {
-            urls = [{
-              template = "https://search.nixos.org/packages";
-              params = [
-                { name = "type"; value = "packages"; }
-                { name = "query"; value = "{searchTerms}"; }
-              ];
-            }];
+            urls = [
+              {
+                template = "https://search.nixos.org/packages";
+                params = [
+                  {
+                    name = "type";
+                    value = "packages";
+                  }
+                  {
+                    name = "query";
+                    value = "{searchTerms}";
+                  }
+                ];
+              }
+            ];
             icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-            definedAliases = [ "@np" ];
+            definedAliases = ["@np"];
           };
           "NixOS Wiki" = {
-            urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
+            urls = [{template = "https://nixos.wiki/index.php?search={searchTerms}";}];
             iconUpdateURL = "https://nixos.wiki/favicon.png";
             updateInterval = 24 * 60 * 60 * 1000; # every day
-            definedAliases = [ "@nw" ];
+            definedAliases = ["@nw"];
           };
           "Google".metaData.hidden = true;
           "Amazon.com".metaData.hidden = true;
@@ -159,18 +166,18 @@
       bookmarks = [
         {
           name = "NixOS";
-          tags = [ "nix" "os" ];
+          tags = ["nix" "os"];
           keyword = "nixos";
           url = "https://nixos.org/";
         }
         {
           name = "Home Manager";
-          tags = [ "nix" "config" ];
+          tags = ["nix" "config"];
           url = "https://nix-community.github.io/home-manager/";
         }
         {
           name = "JourNix blog";
-          tags = [ "nix" "config" ];
+          tags = ["nix" "config"];
           url = "https://journix.dev/";
         }
         {
@@ -199,12 +206,10 @@
         sponsorblock
         istilldontcareaboutcookies
         adaptive-tab-bar-colour
-
       ];
 
-      userChrome = (builtins.readFile ./userChrome.css);
-      userContent = (builtins.readFile ./userContent.css);
-
+      userChrome = builtins.readFile ./userChrome.css;
+      userContent = builtins.readFile ./userContent.css;
     };
   };
 }

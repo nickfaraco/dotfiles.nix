@@ -31,53 +31,59 @@
     stylix.url = "github:danth/stylix";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, nur, ... }:
-    let
-      #globalConfigs = {
-      #  username = "nick";
-      #};
-      # Function to import all .nix files from a directory
-      importOverlays = dir:
-        let
-          contents = builtins.readDir dir;
-          overlayFiles = builtins.filter (name: builtins.match ".*\\.nix" name != null) (builtins.attrNames contents);
-        in
-        map (name: import (dir + "/${name}")) overlayFiles;
+  outputs = inputs @ {
+    self,
+    nix-darwin,
+    nixpkgs,
+    home-manager,
+    nur,
+    ...
+  }: let
+    #globalConfigs = {
+    #  username = "nick";
+    #};
+    # Function to import all .nix files from a directory
+    importOverlays = dir: let
+      contents = builtins.readDir dir;
+      overlayFiles = builtins.filter (name: builtins.match ".*\\.nix" name != null) (builtins.attrNames contents);
+    in
+      map (name: import (dir + "/${name}")) overlayFiles;
 
-      nixpkgsConfig = {
-        config.allowUnfree = true;
-        overlays = [
+    nixpkgsConfig = {
+      config.allowUnfree = true;
+      overlays =
+        [
           inputs.nixpkgs-firefox-darwin.overlay
           nur.overlay
-        ] ++ (importOverlays ./overlays);
-      };
-    in
-    {
-      # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#trantor
-      darwinConfigurations."trantor" = nix-darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        specialArgs = { inherit self; };
-        modules = [
-          ./hosts/trantor.nix
-          inputs.stylix.darwinModules.stylix
-          # `home-manager` module
-          home-manager.darwinModules.home-manager
-          {
-            # `home-manager` config
-            nixpkgs = nixpkgsConfig;
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.nick = import ./home.nix;
-
-            home-manager.extraSpecialArgs = {
-              inherit nur inputs;
-            };
-          }
-        ];
-      };
-
-      # Expose the package set, including overlays, for convenience.
-      darwinPackages = self.darwinConfigurations."trantor".pkgs;
+        ]
+        ++ (importOverlays ./overlays);
     };
+  in {
+    # Build darwin flake using:
+    # $ darwin-rebuild build --flake .#trantor
+    darwinConfigurations."trantor" = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin";
+      specialArgs = {inherit self;};
+      modules = [
+        ./hosts/trantor.nix
+        inputs.stylix.darwinModules.stylix
+        # `home-manager` module
+        home-manager.darwinModules.home-manager
+        {
+          # `home-manager` config
+          nixpkgs = nixpkgsConfig;
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.nick = import ./home.nix;
+
+          home-manager.extraSpecialArgs = {
+            inherit nur inputs;
+          };
+        }
+      ];
+    };
+
+    # Expose the package set, including overlays, for convenience.
+    darwinPackages = self.darwinConfigurations."trantor".pkgs;
+  };
 }

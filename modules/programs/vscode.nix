@@ -1,4 +1,8 @@
-{ pkgs, ... }: {
+{
+  pkgs,
+  inputs,
+  ...
+}: {
   programs.vscode = {
     enable = true;
     enableExtensionUpdateCheck = false;
@@ -21,12 +25,12 @@
         yzhang.markdown-all-in-one
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-        {
-          name = "gruvbox-material";
-          publisher = "sainnhe";
-          version = "6.5.2";
-          sha256 = "sha256-D+SZEQQwjZeuyENOYBJGn8tqS3cJiWbEkmEqhNRY/i4=";
-        }
+        # {
+        #   name = "gruvbox-material";
+        #   publisher = "sainnhe";
+        #   version = "6.5.2";
+        #   sha256 = "sha256-D+SZEQQwjZeuyENOYBJGn8tqS3cJiWbEkmEqhNRY/i4=";
+        # }
       ];
 
     userSettings = {
@@ -36,30 +40,22 @@
       # "workbench.colorTheme" = "Gruvbox Material Dark"; # managed by Stylix
 
       #### NixIDE
-      "[nix]" = {
-        "editor.tabSize" = 2;
-        "enableLanguageServer" = true;
-        "formatterPath" = "nixpkgs-fmt";
-        "serverPath" = "nixd";
-        "serverSettings" = {
-          "nixd" = {
-            "eval" = { };
-            "formatting" = {
-              "command" = "nixpkgs-fmt";
-            };
-            "options" = {
-              "enable" = true;
-              "target" = {
-                "args" = [ ];
-                ## NixOS options
-                # "installable" = "<flakeref>#nixosConfigurations.<name>.options";
-                ## Flake-parts options
-                # "installable" = "<flakeref>#debug.options";
-                ## Home-manager options
-                # "installable" = "<flakeref>#homeConfigurations.<name>.options";
-              };
-            };
+      "nix.enableLanguageServer" = true;
+      "nix.serverPath" = "nixd";
+      "nix.serverSettings" = {
+        "nixd" = {
+          "formatting" = {"command" = ["alejandra"];};
+          "nixpkgs" = {
+            "expr" = "import <nixpkgs> { }";
           };
+          # "options" = {
+          #   "nixos" = {
+          #     "expr" = "(builtins.getFlake \"/PATH/TO/FLAKE\").nixosConfigurations.CONFIGNAME.options";
+          #   };
+          #   "home_manager" = {
+          #     "expr" = "(builtins.getFlake \"/PATH/TO/FLAKE\").homeConfigurations.CONFIGNAME.options";
+          #   };
+          # };
         };
       };
     };
@@ -103,6 +99,7 @@
   home.packages = with pkgs; [
     # Nix Language
     nixd
-    nixpkgs-fmt
+    alejandra
   ];
+  nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"];
 }
