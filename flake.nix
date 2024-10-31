@@ -56,9 +56,9 @@
     nix-homebrew,
     ...
   }: let
-    #globalConfigs = {
-    #  username = "nick";
-    #};
+    globalConfigs = {
+      username = "nick";
+    };
     # Function to import all .nix files from a directory
     importOverlays = dir: let
       contents = builtins.readDir dir;
@@ -80,7 +80,7 @@
     # $ darwin-rebuild build --flake .#trantor
     darwinConfigurations."trantor" = nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
-      specialArgs = {inherit self;};
+      specialArgs = {inherit self globalConfigs;};
       modules = [
         ./hosts/trantor
         inputs.stylix.darwinModules.stylix

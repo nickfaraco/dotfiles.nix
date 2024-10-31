@@ -2,6 +2,7 @@
   pkgs,
   self,
   config,
+  globalConfigs,
   ...
 }: {
   users.users.nick.home = "/Users/nick";
@@ -22,13 +23,16 @@
   services.nix-daemon.enable = true;
   # nix.package = pkgs.nix;
 
-  # Necessary for using flakes on this system.
-  nix.settings.experimental-features = "nix-command flakes";
-
-  # Garbage collector
-  nix.gc.interval = true;
-  nix.optimise.automatic = true;
-  nix.settings.auto-optimise-store = true;
+  # Nix settings
+  nix = {
+    package = pkgs.nix;
+    gc.automatic = true;
+    optimise.automatic = true;
+    settings = {
+      auto-optimise-store = true;
+      experimental-features = ["nix-command" "flakes"]; # Necessary for using flakes on this system.
+    };
+  };
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true; # default shell on catalina
@@ -69,4 +73,77 @@
     ../../modules/stylix.nix
     ./homebrew.nix
   ];
+
+  # Manage system settings
+  security.pam.enableSudoTouchIdAuth = true;
+  system = {
+    defaults = {
+      LaunchServices.LSQuarantine = false;
+      NSGlobalDomain = {
+        AppleInterfaceStyle = "Dark";
+        AppleInterfaceStyleSwitchesAutomatically = false;
+        AppleShowAllExtensions = true;
+        AppleShowAllFiles = true;
+        # ApplePressAndHoldEnabled = false;
+        InitialKeyRepeat = 15;
+        KeyRepeat = 2;
+        NSAutomaticCapitalizationEnabled = false;
+        NSAutomaticDashSubstitutionEnabled = false;
+        NSAutomaticSpellingCorrectionEnabled = false;
+        NSDocumentSaveNewDocumentsToCloud = false;
+        NSNavPanelExpandedStateForSaveMode = true;
+        NSNavPanelExpandedStateForSaveMode2 = true;
+        NSTableViewDefaultSizeMode = 1; # size of the finder sidebar icons
+        PMPrintingExpandedStateForPrint = true;
+        PMPrintingExpandedStateForPrint2 = true;
+        "com.apple.trackpad.scaling" = 2.0; # faster trackpad tracking
+      };
+      dock = {
+        autohide = true;
+        autohide-delay = 0.1;
+        # dashboard-in-overlay = false;
+        mineffect = "scale";
+        minimize-to-application = true;
+        mru-spaces = false;
+        persistent-apps = [
+          "/System/Applications/Launchpad.app"
+          "${pkgs.alacritty}/Applications/Alacritty.app"
+          "${pkgs.vscode}/Applications/Visual Studio Code.app"
+          "${pkgs.firefox-bin}/Applications/Firefox.app"
+          "/Applications/Safari.app"
+        ];
+        persistent-others = [
+          "/Users/${globalConfigs.username}/Documents"
+          "/Users/${globalConfigs.username}/Downloads"
+        ];
+        show-recents = false;
+        showhidden = true;
+        tilesize = 48;
+        wvous-bl-corner = 3; # show application windows from bottom-left corner
+        wvous-br-corner = 4; # show desktop from bottom-right corner
+        wvous-tl-corner = 2; # show mission control from bottom-left corner
+        wvous-tr-corner = 14; # quick note from bottom-left corner
+      };
+      finder = {
+        AppleShowAllExtensions = true;
+        AppleShowAllFiles = true;
+        CreateDesktop = false;
+        FXDefaultSearchScope = "SCcf"; # search in current folder by default
+        FXEnableExtensionChangeWarning = false;
+        FXPreferredViewStyle = "clmv";
+        ShowPathbar = true;
+        ShowStatusBar = true;
+        _FXSortFoldersFirst = true;
+      };
+      screensaver = {
+        askForPassword = true;
+        askForPasswordDelay = 300;
+      };
+      trackpad.Clicking = true; # enable trackpad tap to click
+      trackpad.TrackpadRightClick = true;
+    };
+    keyboard.enableKeyMapping = true;
+    keyboard.remapCapsLockToEscape = true;
+    startup.chime = false;
+  };
 }
