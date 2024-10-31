@@ -12,6 +12,34 @@
         "ll" = "ls -lh";
         "lv" = "ls -la";
       };
+      # initExtra = ''
+      #   # Map every git alias to g<alias>
+      #   function g() {
+      #     if [[ $# -eq 0 ]]; then
+      #       git
+      #     else
+      #       local git_cmd=$(git config --get "alias.$1")
+      #       if [[ -n "$git_cmd" ]]; then
+      #         shift
+      #         git "$git_cmd" "$@"
+      #       else
+      #         git "$@"
+      #       fi
+      #     fi
+      #   }
+
+      #   # Enable completion for the g function
+      #   compdef g=git
+      # '';
+      initExtra = ''
+        # Create explicit aliases for common git commands (map `git <alias>` to `g<alias>`)
+        for cmd in $(git config --get-regexp ^alias\. | cut -d. -f2 | cut -d' ' -f1); do
+          alias "g$cmd"="git $cmd"
+        done
+
+        # Enable completion
+        compdef g=git
+      '';
     };
     atuin = {
       enable = true;
