@@ -41,6 +41,10 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    homebrew-bundle = {
+      url = "github:homebrew/homebrew-bundle";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -78,7 +82,7 @@
       system = "aarch64-darwin";
       specialArgs = {inherit self;};
       modules = [
-        ./hosts/trantor.nix
+        ./hosts/trantor
         inputs.stylix.darwinModules.stylix
         # `home-manager` module
         home-manager.darwinModules.home-manager
@@ -106,6 +110,7 @@
             taps = {
               "homebrew/homebrew-core" = inputs.homebrew-core;
               "homebrew/homebrew-cask" = inputs.homebrew-cask;
+              "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
             };
             # Optional: Enable fully-declarative tap management
             #
