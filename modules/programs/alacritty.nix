@@ -2,7 +2,6 @@
   programs.alacritty = {
     enable = true;
     settings = {
-      live_config_reload = true;
       # font = { # managed by Stylix
       #   normal.family = "FiraCode Nerd Font Mono";
       #   size = 13;
