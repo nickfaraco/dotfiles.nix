@@ -2,7 +2,7 @@
   stylix = {
     enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/everforest-dark-hard.yaml";
-    image = ./walls/everforest_1.jpg;
+    image = ../walls/everforest_1.jpg;
     # cursor.package = pkgs.numix-cursor-theme;
     # cursor.name = "Numix-Cursor";
 
