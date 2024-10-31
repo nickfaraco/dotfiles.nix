@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{...}: {
   # I'd rather not have telemetry on my package manager.
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
