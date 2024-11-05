@@ -16,6 +16,7 @@
         # Languages
         ms-python.python
         ms-python.debugpy
+        james-yu.latex-workshop
 
         tamasfe.even-better-toml
 
@@ -57,6 +58,29 @@
           #   };
           # };
         };
+      };
+      latex-workshop = {
+        "latex.tools" = [
+          {
+            "name" = "latexmk";
+            "command" = "latexmk";
+            "args" = [
+              "-synctex=1"
+              "-interaction=nonstopmode"
+              "-file-line-error"
+              "-pdf"
+              "-outdir=%OUTDIR%"
+              "%DOC%"
+            ];
+          }
+        ];
+        "latex.recipes" = [
+          {
+            "name" = "latexmk 🔃";
+            "tools" = ["latexmk"];
+          }
+        ];
+        "view.pdf.viewer" = "tab";
       };
     };
 
