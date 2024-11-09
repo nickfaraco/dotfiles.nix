@@ -6,32 +6,34 @@
   programs.vscode = {
     enable = true;
     enableExtensionUpdateCheck = false;
-    enableUpdateCheck = true;
+    enableUpdateCheck = false;
     mutableExtensionsDir = false;
 
     extensions = with pkgs.vscode-extensions;
       [
         # Theming
 
-        # Languages
+        ## Languages
+        # Python
         ms-python.python
         ms-python.debugpy
+        # Latex
         james-yu.latex-workshop
-
+        # TOML
         tamasfe.even-better-toml
-
+        # Nix
         jnoortheen.nix-ide
         bbenoist.nix
-
+        # Markdown
         yzhang.markdown-all-in-one
       ]
       ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-        # {
-        #   name = "gruvbox-material";
-        #   publisher = "sainnhe";
-        #   version = "6.5.2";
-        #   sha256 = "sha256-D+SZEQQwjZeuyENOYBJGn8tqS3cJiWbEkmEqhNRY/i4=";
-        # }
+        {
+          name = "texpresso-basic";
+          publisher = "DominikPeters";
+          version = "1.5.1";
+          sha256 = "sha256-EjtSL/V43o77gaiTK8Qa6SLdh0D4Lk+TaWRbCQPKTek=";
+        }
       ];
 
     userSettings = {
@@ -59,29 +61,33 @@
           # };
         };
       };
-      latex-workshop = {
-        "latex.tools" = [
-          {
-            "name" = "latexmk";
-            "command" = "latexmk";
-            "args" = [
-              "-synctex=1"
-              "-interaction=nonstopmode"
-              "-file-line-error"
-              "-pdf"
-              "-outdir=%OUTDIR%"
-              "%DOC%"
-            ];
-          }
-        ];
-        "latex.recipes" = [
-          {
-            "name" = "latexmk 🔃";
-            "tools" = ["latexmk"];
-          }
-        ];
-        "view.pdf.viewer" = "tab";
-      };
+      "latex-workshop.latex.tools" = [
+        {
+          "name" = "latexmk";
+          "command" = "latexmk";
+          "args" = [
+            "-synctex=1"
+            "-interaction=nonstopmode"
+            "-file-line-error"
+            "-pdf"
+            "-outdir=%OUTDIR%"
+            "%DOC%"
+          ];
+        }
+      ];
+      "latex-workshop.latex.recipes" = [
+        {
+          "name" = "latexmk 🔃";
+          "tools" = ["latexmk"];
+        }
+      ];
+      "latex-workshop.view.pdf.viewer" = "tab";
+      "latex-workshop.intellisense.citation.backend" = "biblatex";
+      "latex-workshop.latex.autoBuild.run" = "never";
+      "latex-workshop.latex.autoClean.run" = "never";
+      "latex-workshop.latex.outDir" = "%DIR%/build";
+      "texpresso.useEditorTheme" = true;
+      "texpresso.command" = "${pkgs.texpresso}/bin/texpresso";
     };
 
     # Keybindings

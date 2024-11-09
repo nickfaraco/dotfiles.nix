@@ -57,6 +57,8 @@
       #(setq org-latex-compiler "lualatex")
       #(setq org-preview-latex-default-process 'dvisvgm)
     })
+
+    pkgs.texpresso
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
