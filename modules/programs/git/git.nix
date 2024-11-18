@@ -93,5 +93,9 @@ in {
     ignores = [
       ".DS_Store"
     ];
+    difftastic = {
+      enable = true;
+      color = "always";
+    };
   };
 }
