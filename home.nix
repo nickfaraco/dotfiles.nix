@@ -36,12 +36,14 @@
     (pkgs.texlive.combine {
       inherit
         (pkgs.texlive)
-        scheme-small
+        scheme-medium
         # Add core tools
         
         latexmk
         latex-bin # Provides pdflatex
+        texlive-scripts
         texlive-scripts-extra # Additional TeX Live utilities
+        collection-latexextra
         # Various
         
         latexindent
@@ -53,6 +55,8 @@
         hyperref
         cleveref
         capt-of
+        lipsum
+        newtx
         ;
       #(setq org-latex-compiler "lualatex")
       #(setq org-preview-latex-default-process 'dvisvgm)
