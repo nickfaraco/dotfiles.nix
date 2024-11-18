@@ -84,7 +84,6 @@
         AppleInterfaceStyleSwitchesAutomatically = false;
         AppleShowAllExtensions = true;
         AppleShowAllFiles = true;
-        # ApplePressAndHoldEnabled = false;
         InitialKeyRepeat = 15;
         KeyRepeat = 2;
         NSAutomaticCapitalizationEnabled = false;
@@ -94,6 +93,7 @@
         NSNavPanelExpandedStateForSaveMode = true;
         NSNavPanelExpandedStateForSaveMode2 = true;
         NSTableViewDefaultSizeMode = 1; # size of the finder sidebar icons
+        NSWindowShouldDragOnGesture = true; # use cmd+ctrl+leftClick to drag windows from anywhere
         PMPrintingExpandedStateForPrint = true;
         PMPrintingExpandedStateForPrint2 = true;
         "com.apple.trackpad.scaling" = 2.0; # faster trackpad tracking
