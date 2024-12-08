@@ -72,6 +72,7 @@
   imports = [
     ../../modules/stylix.nix
     ./homebrew.nix
+    ./aerospace.nix
   ];
 
   # Manage system settings
@@ -97,6 +98,7 @@
         PMPrintingExpandedStateForPrint = true;
         PMPrintingExpandedStateForPrint2 = true;
         "com.apple.trackpad.scaling" = 2.0; # faster trackpad tracking
+        _HIHideMenuBar = true;
       };
       dock = {
         autohide = true;
