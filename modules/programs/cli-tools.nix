@@ -12,25 +12,6 @@
         "ll" = "ls -lh";
         "lv" = "ls -la";
       };
-      # initExtra = ''
-      #   # Map every git alias to g<alias>
-      #   function g() {
-      #     if [[ $# -eq 0 ]]; then
-      #       git
-      #     else
-      #       local git_cmd=$(git config --get "alias.$1")
-      #       if [[ -n "$git_cmd" ]]; then
-      #         shift
-      #         git "$git_cmd" "$@"
-      #       else
-      #         git "$@"
-      #       fi
-      #     fi
-      #   }
-
-      #   # Enable completion for the g function
-      #   compdef g=git
-      # '';
       initExtra = ''
         # Create explicit aliases for common git commands (map `git <alias>` to `g<alias>`)
         for cmd in $(git config --get-regexp ^alias\. | cut -d. -f2 | cut -d' ' -f1); do
@@ -65,13 +46,6 @@
     starship = {
       enable = true;
       enableZshIntegration = true;
-      settings = {
-        scan_timeout = 10;
-        character = {
-          success_symbol = "[➜](bold green)";
-          error_symbol = "[➜](bold red)";
-        };
-      };
     };
 
     direnv = {
@@ -81,11 +55,20 @@
       enableZshIntegration = true;
     };
 
-    # tmux = {
-    #   enable = true;
-    #   enableFzf = true;
-    #   enableMouse = true;
-    #   enableSensible = true;
-    # };
+    bash = {
+      enable = true;
+      profileExtra = "exec zsh\n"; # make bash load Zsh, useful on WSL or wherever we cannot change the default system shell
+    };
+
+    ssh = {
+      enable = true;
+      extraConfig = ''
+        IdentityFile ~/.ssh/id_ed25519
+      '';
+      matchBlocks.gh = {
+        user = "git";
+        hostname = "github.com";
+      };
+    };
   };
 }

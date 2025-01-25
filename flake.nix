@@ -75,6 +75,9 @@
         ]
         ++ (importOverlays ./overlays);
     };
+
+    hm-pkgs = nixpkgs.legacyPackages."x86_64-linux";
+
   in {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#trantor
@@ -123,5 +126,18 @@
 
     # Expose the package set, including overlays, for convenience.
     darwinPackages = self.darwinConfigurations."trantor".pkgs;
+
+    # home-configuration for use in non-NixOS distros
+    homeConfigurations."nick" = home-manager.lib.homeManagerConfiguration {
+        pkgs = hm-pkgs;
+
+        modules = [ ./hosts/wsl/home.nix ];
+
+        # Optionally use extraSpecialArgs
+        # to pass through arguments to home.nix
+        extraSpecialArgs = {
+            inherit nur inputs;
+          };
+      };
   };
 }

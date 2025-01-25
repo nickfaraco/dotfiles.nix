@@ -1,15 +1,6 @@
 # home.nix
 {pkgs, ...}: {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
 
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
   home.stateVersion = "23.05"; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
@@ -18,6 +9,8 @@
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
+    pkgs.openssh
+    pkgs.fastfetch
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -38,14 +31,14 @@
         (pkgs.texlive)
         scheme-medium
         # Add core tools
-        
+
         latexmk
         latex-bin # Provides pdflatex
         texlive-scripts
         texlive-scripts-extra # Additional TeX Live utilities
         collection-latexextra
         # Various
-        
+
         latexindent
         dvisvgm
         dvipng # for preview and export as html
@@ -78,8 +71,14 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+
     ".hushlogin".text = ""; # remove the MOTD Last Login message at shell startup
+
   };
+
+  # With xdg.configFile, you can specify what goes inside ~/.config without specifying the
+  # full path relative to $HOME
+  xdg.configFile."starship.toml".source = ../../files/starship.toml;
 
   # You can also manage environment variables but you will have to manually
   # source
@@ -92,20 +91,21 @@
   #
   # if you don't want to manage your shell through Home Manager.
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "hx";
+    SUDO_EDITOR = "hx";
   };
 
+  # Add directories to the PATH
   home.sessionPath = [
-    "/opt/homebrew/bin"
+
   ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
   imports = [
-    # inputs.nix-colors.homeManagerModules.default
-    ./modules/programs
+    ../../modules/programs/git
+    ../../modules/programs/cli-tools.nix
+    ../../modules/programs/helix.nix
   ];
-
-  # colorScheme = inputs.nix-colors.colorSchemes.everforest-dark-hard;
 }
