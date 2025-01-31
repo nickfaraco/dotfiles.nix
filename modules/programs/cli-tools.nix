@@ -11,6 +11,7 @@
         "la" = "ls -ah";
         "ll" = "ls -lh";
         "lv" = "ls -la";
+        "cat" = "bat";
       };
       initExtra = ''
         # Create explicit aliases for common git commands (map `git <alias>` to `g<alias>`)
