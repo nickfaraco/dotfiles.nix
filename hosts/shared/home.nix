@@ -104,6 +104,7 @@
   programs.home-manager.enable = true;
 
   imports = [
+    ../../modules/stylix.nix
     ../../modules/programs/git
     ../../modules/programs/cli-tools.nix
     ../../modules/programs/helix.nix

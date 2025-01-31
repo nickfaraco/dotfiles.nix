@@ -130,8 +130,7 @@
     # home-configuration for use in non-NixOS distros
     homeConfigurations."nick" = home-manager.lib.homeManagerConfiguration {
         pkgs = hm-pkgs;
-
-        modules = [ ./hosts/wsl/home.nix ];
+        modules = [ inputs.stylix.homeManagerModules.stylix ./hosts/wsl/home.nix ];
 
         # Optionally use extraSpecialArgs
         # to pass through arguments to home.nix

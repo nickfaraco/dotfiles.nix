@@ -70,7 +70,6 @@
     '';
 
   imports = [
-    ../../modules/stylix.nix
     ./homebrew.nix
   ];
 
