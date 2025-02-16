@@ -127,6 +127,25 @@
     # Expose the package set, including overlays, for convenience.
     darwinPackages = self.darwinConfigurations."trantor".pkgs;
 
+    nixosConfigurations."smyrno" = nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit inputs; };
+      modules = [
+        ./hosts/smyrno/configuration.nix
+        home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users."${globalConfigs.username}" = import ./hosts/smyrno/home.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass
+            # arguments to home.nix
+            home-manager.extraSpecialArgs = {
+            inherit nur inputs;
+          };
+        }
+      inputs.stylix.nixosModules.stylix 
+      ];
+    };
+
     # home-configuration for use in non-NixOS distros
     homeConfigurations."nick" = home-manager.lib.homeManagerConfiguration {
         pkgs = hm-pkgs;

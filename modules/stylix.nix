@@ -55,5 +55,7 @@
     #   base0E = "d3869b";
     #   base0F = "d65d0e";
     # };
+    
+    targets.gnome.enable = true;
   };
 }
