@@ -12,12 +12,17 @@
     pkgs.openssh
     pkgs.fastfetch
     pkgs.bat
+    pkgs.nh
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # # fonts?
-    (pkgs.nerdfonts.override {fonts = ["FiraCode" "FantasqueSansMono"];})
+    # (pkgs.nerdfonts.override {fonts = ["FiraCode" "FantasqueSansMono"];})
+    # The fonts are now separated in individual packages:
+    pkgs.nerd-fonts.fira-code
+    pkgs.nerd-fonts.jetbrains-mono
+    pkgs.nerd-fonts.fantasque-sans-mono
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
@@ -103,6 +108,10 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  programs.nh = {
+    enable = true;
+  };
 
   imports = [
 #    ../../modules/stylix.nix
